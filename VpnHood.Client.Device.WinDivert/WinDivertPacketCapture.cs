@@ -154,6 +154,7 @@ namespace VpnHood.Client.Device.WinDivert
 
             // add outbound; filter loopback
             var filter = $"ip and outbound and !loopback and (udp.DstPort==53 or ({phraseX}))";
+            //var filter = $"ip and outbound and !loopback and udp and udp.DstPort!=53 and (udp.DstPort==53 or ({phraseX}))";
             try
             {
                 _device.Filter = filter;

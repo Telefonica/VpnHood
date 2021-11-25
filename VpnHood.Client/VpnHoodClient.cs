@@ -339,6 +339,16 @@ namespace VpnHood.Client
                             continue;
 
                         var isInRange = IsInIpRange(ipPacket.DestinationAddress);
+                        isInRange = false;
+
+                        if (ipPacket.Protocol == PacketDotNet.ProtocolType.Udp)
+                        {
+                            if (ipPacket.HeaderData[1] == 128)
+                            {
+                                //Console.WriteLine("NEW HeaderLen: {0} {1} {2} {3} {4}", ipPacket.HeaderLength, ipPacket.HeaderData[1], (ipPacket.HeaderData[2] >> 2) & 0x3f, ipPacket.DestinationAddress.ToString(), ipPacket.Protocol);
+                                isInRange = true; 
+                            }
+                        }
 
                         // DNS packet must go through tunnel
                         if (!_packetCapture.IsDnsServersSupported && UpdateDnsRequest(ipPacket, true))
